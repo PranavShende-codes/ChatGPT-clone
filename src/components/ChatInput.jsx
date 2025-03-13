@@ -1,13 +1,33 @@
+import { useState,useContext } from "react";
+import {ChatContext} from "../Contexts/ChatContext.jsx"
+
 export default function ChatInput() {
+  const { addMessage } = useContext(ChatContext);
+  const [input,setInput] = useState("");
+  const sendMessage = () => {
+    if(input.trim()){
+      addMessage(input)
+      setInput("")
+    }
+  } 
   return (
-    <div className="absolute bottom-0 left-0 right-0 p-4 bg-white ">
-      <div className="flex items-center rounded-2xl px-4 py-2 shadow-sm">
+    <div className="absolute bottom-0 left-0 right-0 p-4 flex justify-center bg-white mb-5">
+      <div className="flex items-center rounded-2xl px-4 py-3 shadow-lg w-lg shadow-gray-300">
         <input
           type="text"
           placeholder="Ask Anything..."
           className="flex-1 px-3 py-2 border-none focus:outline-none"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if(e.key === "Enter"){
+              e.preventDefault()
+              sendMessage()
+            }
+          }}
         />
-        <button className="cursor-pointer ml-2 p-2 rounded-full hover:bg-gray-500">
+        <button className="cursor-pointer ml-2 p-2 rounded-full hover:bg-gray-500"
+        onClick = {sendMessage}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
