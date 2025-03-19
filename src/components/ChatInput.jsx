@@ -4,15 +4,15 @@ import {ChatContext} from "../Contexts/ChatContext.jsx"
 export default function ChatInput() {
   const { addMessage } = useContext(ChatContext);
   const [input,setInput] = useState("");
-  const sendMessage = () => {
+  const sendMessage =async () => {
     if(input.trim()){
-      addMessage(input)
-      setInput("")
+      await addMessage(input,"user");
+      setInput("");
     }
   } 
   return (
-    <div className="absolute bottom-0 left-0 right-0 p-4 flex justify-center bg-white mb-5">
-      <div className="flex items-center rounded-2xl px-4 py-3 shadow-lg w-lg shadow-gray-300">
+    <div className="p-4 bg-white flex justify-center">
+      <div className="flex items-center rounded-2xl px-4 py-3 shadow-lg w-2xl shadow-gray-300">
         <input
           type="text"
           placeholder="Ask Anything..."
