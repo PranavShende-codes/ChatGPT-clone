@@ -1,18 +1,20 @@
-import { useState,useContext } from "react";
-import {ChatContext} from "../Contexts/ChatContext.jsx"
+import { useState, useContext } from "react";
+import { ChatContext } from "../Contexts/ChatContext.jsx";
 
 export default function ChatInput() {
   const { addMessage } = useContext(ChatContext);
-  const [input,setInput] = useState("");
-  const sendMessage =async () => {
-    if(input.trim()){
-      await addMessage(input,"user");
+  const [input, setInput] = useState("");
+
+  const sendMessage = () => {
+    if (input.trim()) {
+      addMessage(input);
       setInput("");
     }
-  } 
+  };
+
   return (
-    <div className="p-4 bg-white flex justify-center">
-      <div className="flex items-center rounded-2xl px-4 py-3 shadow-lg w-2xl shadow-gray-300">
+    <div className="absolute bottom-4 left-1/2 transform -translate-x-2/5 w-full flex justify-center">
+      <div className="w-[90%] max-w-[700px] bg-white shadow-lg px-4 py-2 rounded-2xl flex items-center">
         <input
           type="text"
           placeholder="Ask Anything..."
@@ -20,14 +22,16 @@ export default function ChatInput() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {
-            if(e.key === "Enter"){
-              e.preventDefault()
-              sendMessage()
+            if (e.key === "Enter") {
+              e.preventDefault();
+              sendMessage();
             }
           }}
         />
-        <button className="cursor-pointer ml-2 p-2 rounded-full hover:bg-gray-500"
-        onClick = {sendMessage}>
+        <button
+          className="cursor-pointer ml-2 p-2 rounded-full hover:bg-gray-200"
+          onClick={sendMessage}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"

@@ -2,9 +2,6 @@ import { InferenceClient } from "@huggingface/inference";
 
 const client= new InferenceClient(import.meta.env.VITE_HF_API_KEY);
 
-console.log("API Key:", import.meta.env.VITE_HF_API_KEY);
-
-
 export async function getAIResponse(userMessage){
  try {
   const response = await client.chatCompletion({
