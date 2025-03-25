@@ -1,7 +1,8 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { ChatContext } from "../Contexts/ChatContext.jsx";
 import ChatInput from "./ChatInput";
-
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm"
 export default function ChatWindow() {
   const contextValue = useContext(ChatContext);
 
@@ -18,24 +19,27 @@ export default function ChatWindow() {
 
   useEffect(() => {
     if (!lastMessage || lastMessage.sender !== "AI") return;
-
     setDisplayedText(""); // Reset before typing
-    let index = 0;
+    messages.forEach((msg, index) => {
+    });
+
+    let currentIndex = 0;
     const interval = setInterval(() => {
-      if (index < lastMessage.text.length) {
-        setDisplayedText((prev) => prev + lastMessage.text[index]);
-        index++;
+      if (currentIndex < lastMessage.text?.length) {
+        setDisplayedText((prev) => prev + lastMessage.text[currentIndex]);
+        currentIndex++;
       } else {
         clearInterval(interval);
       }
     }, 1); // Adjust speed if needed
 
     return () => clearInterval(interval);
-  }, [lastMessage]);
+  }, [lastMessage?.text]);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
 
   return (
     <div className="flex flex-col flex-1 overflow-y-auto p-4 pb-24">
@@ -48,9 +52,20 @@ export default function ChatWindow() {
               : "bg-gray-200 text-black self-start"
           }`}
         >
-          {msg.sender === "AI" && index === messages.length - 1
-            ? displayedText
-            : msg.text}
+          {msg.text ? (
+            msg.sender === "AI" && index === messages.length - 1 ? (
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {displayedText ||
+                  msg.text}
+              </ReactMarkdown>
+            ) : (
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {msg.text}
+              </ReactMarkdown>
+            )
+          ) : (
+            <span>Error: Message text is undefined</span>
+          )}
         </div>
       ))}
       <ChatInput />
